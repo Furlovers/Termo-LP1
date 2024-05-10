@@ -12,13 +12,13 @@ public class Main extends JFrame {
     private BufferedImage img;
 
     public Main() {
+        gameScreen = new GameScreen(img);
+        gameScreen.setBackground(Color.DARK_GRAY);
+        add(gameScreen);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        gameScreen = new GameScreen(img);
-        gameScreen.setBackground(Color.DARK_GRAY);
-        add(gameScreen);
     }
 }
