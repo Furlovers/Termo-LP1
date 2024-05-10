@@ -1,7 +1,6 @@
 package ui;
 
 import java.awt.Color;
-import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
@@ -9,10 +8,8 @@ public class Main extends JFrame {
 
     private GameScreen gameScreen;
 
-    private BufferedImage img;
-
     public Main() {
-        gameScreen = new GameScreen(img);
+        gameScreen = new GameScreen();
         gameScreen.setBackground(Color.DARK_GRAY);
         add(gameScreen);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
