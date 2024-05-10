@@ -6,6 +6,8 @@ import java.util.List;
 import entities.Letter;
 
 public class StringHelper {
+    
+    
     public static List<Letter> setStringToLetter(String word) {
 
         char[] array = word.toCharArray();
@@ -17,5 +19,21 @@ public class StringHelper {
             letterList.add(letter);
         }
         return letterList;
+    }
+
+    public static void isInAnswer(Letter letter, String answer){
+        
+        char[] separated_answer = new char[answer.length];
+
+        for (int i = 0; i<answer.length; i++){
+            separated_answer[i] = answer.charAt(i);
+        }
+
+        for(int i = 0; i<answer.length; i++){
+            if (letter.getLetter() == separated_answer[i]){
+                letter.setState(DISCOVERED_AND_WRONG);
+            }
+        }
+
     }
 }
