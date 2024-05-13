@@ -1,23 +1,34 @@
 package ui;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import entities.Square;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
-public class GameScreen extends JPanel implements KeyListener {
+public class GameScreen extends JPanel implements KeyListener, ActionListener {
     private int cellSize = 64;
     private int squareIndex = 0;
+    private int wordIndex = 1;
     private ArrayList<Square> squares;
+    private JButton submitButton;
+    private boolean canWrite = true;
 
     public GameScreen() {
+        setLayout(null);
+        drawButton();
         setFocusable(true);
         addKeyListener(this);
-
     }
 
     public void paintComponent(Graphics g) {
@@ -43,14 +54,43 @@ public class GameScreen extends JPanel implements KeyListener {
                 if (squareIndex <= 0) {
                     return;
                 }
+                System.out.println(squareIndex + " " + wordIndex);
+                switch (wordIndex) {
+                    case 2:
+                        if (squareIndex == 5) {
+                            return;
+                        }
+                        break;
+                    case 3:
+                        if (squareIndex == 10) {
+                            return;
+                        }
+                        break;
+                    case 4:
+                        if (squareIndex == 15) {
+                            return;
+                        }
+                        break;
+                    case 5:
+                        if (squareIndex == 20) {
+                            return;
+                        }
+                        break;
+                }
+                if (squareIndex % 5 == 0) {
+                    canWrite = true;
+                }
                 squareIndex--;
                 squares.get(squareIndex).setLetter(' ');
             } else {
-                if (squareIndex == squares.size() || !String.valueOf(typedChar).matches("[a-zA-Z]")) {
+                if (squareIndex == squares.size() || !String.valueOf(typedChar).matches("[a-zA-Z]") || !canWrite) {
                     return;
                 }
                 squares.get(squareIndex).setLetter(typedChar);
                 squareIndex++;
+                if (squareIndex % 5 == 0) {
+                    canWrite = false;
+                }
             }
             repaint();
         }
@@ -92,17 +132,52 @@ public class GameScreen extends JPanel implements KeyListener {
     }
 
     public void drawSquare(Graphics g, Square square, char letter) {
-
-
         int arcWidth = 16;
         int arcHeight = 16;
 
         g.setColor(Color.black);
         g.fillRoundRect(square.getXPos(), square.getYPos(), cellSize, cellSize, arcWidth, arcHeight);
 
+        FontMetrics fm = g.getFontMetrics();
+        int letterWidth = fm.stringWidth(String.valueOf(letter));
+
+        int xPos = square.getXPos() + (cellSize - letterWidth) / 2;
+
+        int yPos = square.getYPos() + (cellSize + fm.getAscent()) / 2;
 
         g.setColor(Color.white);
-        g.drawString(String.valueOf(letter), square.getXPos() + 18, square.getYPos() + 48);
+        g.drawString(String.valueOf(letter), xPos, yPos);
+    }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == submitButton) {
+            canWrite = true;
+            submitButton.setFocusable(false);
+            if ((wordIndex == 1 & squareIndex == 5) || (wordIndex == 2 & squareIndex == 10)
+                    || (wordIndex == 3 & squareIndex == 15) || (wordIndex == 4 & squareIndex == 20)) {
+                wordIndex++;
+            }
+        }
+    }
+
+    public void drawButton() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int screenWidth = (int) screenSize.getWidth();
+        int screenHeight = (int) screenSize.getHeight();
+
+        int buttonWidth = 200;
+        int buttonHeight = 50;
+
+        submitButton = new JButton("Enter");
+        submitButton.setFont(new Font("Arial", Font.BOLD, 16));
+        submitButton.setFocusPainted(false);
+        submitButton.setBorderPainted(false);
+        submitButton.setBackground(Color.black);
+        submitButton.setForeground(Color.WHITE);
+        submitButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        submitButton.setBounds((screenWidth - buttonWidth) / 2, screenHeight - 200, buttonWidth, buttonHeight);
+        submitButton.addActionListener(this);
+        add(submitButton);
     }
 }
