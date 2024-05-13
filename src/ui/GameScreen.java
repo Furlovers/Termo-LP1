@@ -3,6 +3,8 @@ package ui;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+
+import entities.Letter;
 import entities.Square;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -15,6 +17,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class GameScreen extends JPanel implements KeyListener, ActionListener {
     private int cellSize = 64;
@@ -23,6 +27,15 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
     private ArrayList<Square> squares;
     private JButton submitButton;
     private boolean canWrite = true;
+    private List<List<Letter>> words = Arrays.asList(
+            Arrays.asList(new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' ')),
+            Arrays.asList(new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' ')),
+            Arrays.asList(new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' ')),
+            Arrays.asList(new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' ')),
+            Arrays.asList(new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' ')),
+            Arrays.asList(new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' ')));
+
+    private String word = "TESTE";
 
     public GameScreen() {
         setLayout(null);
@@ -46,6 +59,7 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
+        System.out.println(squareIndex);
         char typedChar = e.getKeyChar();
         String typedCharString = String.valueOf(typedChar).toUpperCase();
         typedChar = typedCharString.charAt(0);
@@ -54,7 +68,6 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
                 if (squareIndex <= 0) {
                     return;
                 }
-                System.out.println(squareIndex + " " + wordIndex);
                 switch (wordIndex) {
                     case 2:
                         if (squareIndex == 5) {
@@ -76,22 +89,35 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
                             return;
                         }
                         break;
+                    case 6:
+                        if (squareIndex == 30) {
+                            return;
+                        }
+                        break;
                 }
                 if (squareIndex % 5 == 0) {
                     canWrite = true;
                 }
                 squareIndex--;
+                words.get(wordIndex - 1).get(squareIndex - (5 * (wordIndex - 1))).setLetter(' ');
                 squares.get(squareIndex).setLetter(' ');
             } else {
                 if (squareIndex == squares.size() || !String.valueOf(typedChar).matches("[a-zA-Z]") || !canWrite) {
                     return;
                 }
+                words.get(wordIndex - 1).get(squareIndex - (5 * (wordIndex - 1))).setLetter(typedChar);
                 squares.get(squareIndex).setLetter(typedChar);
                 squareIndex++;
                 if (squareIndex % 5 == 0) {
                     canWrite = false;
                 }
             }
+            words.forEach(word -> {
+                word.forEach(letter -> {
+                    System.out.print(letter.getLetter());
+                });
+                System.out.println();
+            });
             repaint();
         }
     }
@@ -155,7 +181,8 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
             canWrite = true;
             submitButton.setFocusable(false);
             if ((wordIndex == 1 & squareIndex == 5) || (wordIndex == 2 & squareIndex == 10)
-                    || (wordIndex == 3 & squareIndex == 15) || (wordIndex == 4 & squareIndex == 20)) {
+                    || (wordIndex == 3 & squareIndex == 15) || (wordIndex == 4 & squareIndex == 20)
+                    || (wordIndex == 5 & squareIndex == 25)) {
                 wordIndex++;
             }
         }
