@@ -29,14 +29,20 @@ public class StringHelper {
             separated_answer[i] = answer.charAt(i);
         }
 
+        boolean isWrong = true;
         for (int i = 0; i < answer.length(); i++) {
             if (letter.getLetter() == separated_answer[i]) {
+                isWrong = false;
                 letter.setState(stateEnum.DISCOVERED_AND_WRONG);
                 if (i == letterIndex) {
                     letter.setState(stateEnum.DISCOVERED_AND_RIGHT);
                     return true;
                 }
             }
+        }
+
+        if (isWrong) {
+            letter.setState(stateEnum.WRONG);
         }
         return false;
 

@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 
 import entities.Letter;
 import entities.Square;
+import entities.stateEnum;
 import helpers.StringHelper;
 
 import java.awt.Color;
@@ -38,7 +39,12 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
             Arrays.asList(new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' ')),
             Arrays.asList(new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' ')));
 
-    private String word = "TESTE";
+    private String word = "TOSAR";
+    private List<Letter> letters = Arrays.asList(new Letter('A'), new Letter('B'), new Letter('C'), new Letter('D'),
+            new Letter('E'), new Letter('F'), new Letter('G'), new Letter('H'), new Letter('I'), new Letter('J'),
+            new Letter('K'), new Letter('L'), new Letter('M'), new Letter('N'), new Letter('O'), new Letter('P'),
+            new Letter('Q'), new Letter('R'), new Letter('S'), new Letter('T'), new Letter('U'), new Letter('V'),
+            new Letter('W'), new Letter('X'), new Letter('Y'), new Letter('Z'));
 
     public GameScreen() {
         setLayout(null);
@@ -54,6 +60,8 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
         }
 
         g.setFont(new Font("Arial", Font.BOLD, 40));
+
+        drawLettters(g);
 
         words.forEach(word -> {
             for (int i = 0; i < word.size(); i++) {
@@ -163,6 +171,9 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
             case UNDISCOVERED:
                 g.setColor(Color.black);
                 break;
+            case WRONG:
+                g.setColor(Color.black);
+                break;
             case DISCOVERED_AND_WRONG:
                 g.setColor(Color.yellow);
                 break;
@@ -189,17 +200,36 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
         if (e.getSource() == submitButton) {
             canWrite = true;
             submitButton.setFocusable(false);
-            if ((wordIndex == 1 & squareIndex == 5) || (wordIndex == 2 & squareIndex == 10)
-                    || (wordIndex == 3 & squareIndex == 15) || (wordIndex == 4 & squareIndex == 20)
-                    || (wordIndex == 5 & squareIndex == 25)) {
+
+            int targetSquareIndex = (wordIndex - 1) * 5 + 5;
+
+            if (squareIndex == targetSquareIndex && !win) {
                 win = true;
-                for (int i = 0; i < words.get(wordIndex - 1).size(); i++) {
-                    boolean right = StringHelper.isInAnswer(words.get(wordIndex - 1).get(i), word, i);
+                List<Letter> currentWord = words.get(wordIndex - 1);
+                for (int i = 0; i < currentWord.size(); i++) {
+                    boolean right = StringHelper.isInAnswer(currentWord.get(i), word, i);
+                    Letter currentLetter = currentWord.get(i);
+                    for (Letter letter : letters) {
+                        if (letter.getLetter() == currentLetter.getLetter()) {
+                            if (letter.getStatesEnum() == stateEnum.DISCOVERED_AND_RIGHT) {
+                                continue;
+                            } else if (letter.getStatesEnum() == stateEnum.DISCOVERED_AND_WRONG) {
+                                if (currentLetter.getStatesEnum() == stateEnum.DISCOVERED_AND_RIGHT) {
+                                    letter.setState(stateEnum.DISCOVERED_AND_RIGHT);
+                                } else {
+                                    continue;
+                                }
+                            } else {
+                                letter.setState(currentLetter.getStatesEnum());
+                            }
+                        }
+                    }
                     if (!right) {
                         win = false;
                     }
                 }
                 wordIndex++;
+
                 repaint();
             }
         }
@@ -223,5 +253,34 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
         submitButton.setBounds((screenWidth - buttonWidth) / 2, screenHeight - 200, buttonWidth, buttonHeight);
         submitButton.addActionListener(this);
         add(submitButton);
+    }
+
+    public void drawLettters(Graphics g) {
+        super.paintComponent(g);
+        int startX = 40;
+        int startY = 40;
+        int spacingX = 40;
+        int spacingY = 40;
+        int columns = 13;
+
+        letters.forEach(letter -> {
+            if (letter.getStatesEnum() == stateEnum.DISCOVERED_AND_RIGHT) {
+                g.setColor(Color.GREEN);
+            } else if (letter.getStatesEnum() == stateEnum.DISCOVERED_AND_WRONG) {
+                g.setColor(Color.YELLOW);
+            } else if (letter.getStatesEnum() == stateEnum.WRONG) {
+                g.setColor(Color.DARK_GRAY);
+            } else {
+                g.setColor(Color.BLACK);
+            }
+
+            int letterIndex = letter.getLetter() - 'A';
+            int column = letterIndex % columns;
+            int row = letterIndex / columns;
+            int xPos = startX + column * spacingX;
+            int yPos = startY + row * spacingY;
+            g.drawString(letter.getLetter() + "", xPos, yPos);
+        });
+
     }
 }
