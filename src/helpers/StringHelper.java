@@ -21,7 +21,7 @@ public class StringHelper {
         return letterList;
     }
 
-    public static void isInAnswer(Letter letter, String answer) {
+    public static boolean isInAnswer(Letter letter, String answer, int letterIndex) {
 
         char[] separated_answer = new char[answer.length()];
 
@@ -32,8 +32,13 @@ public class StringHelper {
         for (int i = 0; i < answer.length(); i++) {
             if (letter.getLetter() == separated_answer[i]) {
                 letter.setState(stateEnum.DISCOVERED_AND_WRONG);
+                if (i == letterIndex) {
+                    letter.setState(stateEnum.DISCOVERED_AND_RIGHT);
+                    return true;
+                }
             }
         }
+        return false;
 
     }
 }

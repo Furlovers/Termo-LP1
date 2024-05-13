@@ -6,6 +6,8 @@ import javax.swing.JPanel;
 
 import entities.Letter;
 import entities.Square;
+import helpers.StringHelper;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -27,6 +29,7 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
     private ArrayList<Square> squares;
     private JButton submitButton;
     private boolean canWrite = true;
+    private boolean win = false;
     private List<List<Letter>> words = Arrays.asList(
             Arrays.asList(new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' ')),
             Arrays.asList(new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' ')),
@@ -52,9 +55,11 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
 
         g.setFont(new Font("Arial", Font.BOLD, 40));
 
-        for (Square square : squares) {
-            drawSquare(g, square, square.getLetter());
-        }
+        words.forEach(word -> {
+            for (int i = 0; i < word.size(); i++) {
+                drawSquare(g, squares.get(i + (5 * (words.indexOf(word)))), word.get(i));
+            }
+        });
     }
 
     @Override
@@ -62,7 +67,8 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
         char typedChar = e.getKeyChar();
         String typedCharString = String.valueOf(typedChar).toUpperCase();
         typedChar = typedCharString.charAt(0);
-        if (squareIndex <= squares.size()) {
+        System.out.println(win);
+        if (squareIndex <= squares.size() && !win) {
             if ((int) e.getKeyChar() == 8) { // backspace code
                 if (squareIndex <= 0) {
                     return;
@@ -150,22 +156,33 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
         return squares;
     }
 
-    public void drawSquare(Graphics g, Square square, char letter) {
+    public void drawSquare(Graphics g, Square square, Letter letter) {
         int arcWidth = 16;
         int arcHeight = 16;
 
-        g.setColor(Color.black);
+        switch (letter.getStatesEnum()) {
+            case UNDISCOVERED:
+                g.setColor(Color.black);
+                break;
+            case DISCOVERED_AND_WRONG:
+                g.setColor(Color.yellow);
+                break;
+            case DISCOVERED_AND_RIGHT:
+                g.setColor(Color.green);
+                break;
+        }
         g.fillRoundRect(square.getXPos(), square.getYPos(), cellSize, cellSize, arcWidth, arcHeight);
 
         FontMetrics fm = g.getFontMetrics();
-        int letterWidth = fm.stringWidth(String.valueOf(letter));
+        int letterWidth = fm.stringWidth(String.valueOf(letter.getLetter()));
+        int letterHeight = fm.getAscent();
 
         int xPos = square.getXPos() + (cellSize - letterWidth) / 2;
-
-        int yPos = square.getYPos() + (cellSize + fm.getAscent()) / 2;
+        int yPos = square.getYPos() + (cellSize + letterHeight) / 2;
 
         g.setColor(Color.white);
-        g.drawString(String.valueOf(letter), xPos, yPos);
+        String letterString = letter.getLetter() == ' ' ? "" : String.valueOf(letter.getLetter());
+        g.drawString(letterString, xPos, yPos);
     }
 
     @Override
@@ -176,7 +193,15 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
             if ((wordIndex == 1 & squareIndex == 5) || (wordIndex == 2 & squareIndex == 10)
                     || (wordIndex == 3 & squareIndex == 15) || (wordIndex == 4 & squareIndex == 20)
                     || (wordIndex == 5 & squareIndex == 25)) {
+                win = true;
+                for (int i = 0; i < words.get(wordIndex - 1).size(); i++) {
+                    boolean right = StringHelper.isInAnswer(words.get(wordIndex - 1).get(i), word, i);
+                    if (!right) {
+                        win = false;
+                    }
+                }
                 wordIndex++;
+                repaint();
             }
         }
     }
