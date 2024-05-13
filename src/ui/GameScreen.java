@@ -59,7 +59,6 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        System.out.println(squareIndex);
         char typedChar = e.getKeyChar();
         String typedCharString = String.valueOf(typedChar).toUpperCase();
         typedChar = typedCharString.charAt(0);
@@ -112,12 +111,6 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
                     canWrite = false;
                 }
             }
-            words.forEach(word -> {
-                word.forEach(letter -> {
-                    System.out.print(letter.getLetter());
-                });
-                System.out.println();
-            });
             repaint();
         }
     }
