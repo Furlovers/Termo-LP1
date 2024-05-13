@@ -67,7 +67,6 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
         char typedChar = e.getKeyChar();
         String typedCharString = String.valueOf(typedChar).toUpperCase();
         typedChar = typedCharString.charAt(0);
-        System.out.println(win);
         if (squareIndex <= squares.size() && !win) {
             if ((int) e.getKeyChar() == 8) { // backspace code
                 if (squareIndex <= 0) {
