@@ -8,6 +8,7 @@ import entities.Letter;
 import entities.Square;
 import entities.stateEnum;
 import helpers.StringHelper;
+import helpers.WordsMock;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -39,7 +40,7 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
             Arrays.asList(new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' ')),
             Arrays.asList(new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' ')));
 
-    private String word = "TOSAR";
+    private String word = "TESTE";
     private List<Letter> letters = Arrays.asList(new Letter('A'), new Letter('B'), new Letter('C'), new Letter('D'),
             new Letter('E'), new Letter('F'), new Letter('G'), new Letter('H'), new Letter('I'), new Letter('J'),
             new Letter('K'), new Letter('L'), new Letter('M'), new Letter('N'), new Letter('O'), new Letter('P'),
@@ -47,6 +48,7 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
             new Letter('W'), new Letter('X'), new Letter('Y'), new Letter('Z'));
 
     public GameScreen() {
+        // word = WordsMock.getRandomWord();
         setLayout(null);
         drawButton();
         setFocusable(true);
@@ -258,7 +260,7 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
     public void drawLettters(Graphics g) {
         super.paintComponent(g);
         int startX = 40;
-        int startY = 40;
+        int startY = 60;
         int spacingX = 40;
         int spacingY = 40;
         int columns = 13;
