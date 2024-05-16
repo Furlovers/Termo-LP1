@@ -4,6 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Letter {
+    /*
+     * Definição da classe "Letter", elemento base
+     * para a lógica do jogo desenvolvido. Possui os
+     * atributos 'letter', o qual recebe uma letra (char)
+     * e state, que recebe o estado daquela letra em relação 
+     * à palavra gabarito daquela partida.
+     */
     private char letter;
     private stateEnum state;
 
@@ -27,6 +34,13 @@ public class Letter {
     }
 
     public List<Letter> setStringToLetter(String word){
+
+        /* Recebe uma palavra como string, tranforma todas
+         * as sua letras em maiúsculas então cria-se um objeto
+         * 'Letter' para cada uma delas. Cada objeto 'Letter'
+         * é armazenado em um ArrayList que é retornado, a fim 
+         * viabilizar a aplicação dos métodos desenvolvidos.
+         */
 
         char[] array = word.toCharArray();
         List<Letter> letterList = new ArrayList<Letter>();
