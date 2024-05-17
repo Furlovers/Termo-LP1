@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GameScreen extends JPanel implements KeyListener, ActionListener {
+    private String word = WordsMock.getRandomWord();
     private int cellSize = 64;
     private int squareIndex = 0;
     private int wordIndex = 1;
@@ -40,7 +41,6 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
             Arrays.asList(new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' ')),
             Arrays.asList(new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' ')));
 
-    private String word = "TESTE";
     private List<Letter> letters = Arrays.asList(new Letter('A'), new Letter('B'), new Letter('C'), new Letter('D'),
             new Letter('E'), new Letter('F'), new Letter('G'), new Letter('H'), new Letter('I'), new Letter('J'),
             new Letter('K'), new Letter('L'), new Letter('M'), new Letter('N'), new Letter('O'), new Letter('P'),
@@ -48,7 +48,7 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
             new Letter('W'), new Letter('X'), new Letter('Y'), new Letter('Z'));
 
     public GameScreen() {
-        // word = WordsMock.getRandomWord();
+        System.out.println(word);
         setLayout(null);
         drawButton();
         setFocusable(true);
@@ -209,6 +209,7 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
                 win = true;
                 List<Letter> currentWord = words.get(wordIndex - 1);
                 for (int i = 0; i < currentWord.size(); i++) {
+                    System.out.println(word);
                     boolean right = StringHelper.isInAnswer(currentWord.get(i), word, i);
                     Letter currentLetter = currentWord.get(i);
                     for (Letter letter : letters) {

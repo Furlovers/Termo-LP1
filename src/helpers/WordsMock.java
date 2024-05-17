@@ -6,7 +6,8 @@ import java.util.Arrays;
 public class WordsMock {
 
     public static String getRandomWord() {
-        return wordsMock.get((int) (Math.random() * wordsMock.size()));
+        String word = wordsMock.get((int) (Math.random() * wordsMock.size()));
+        return word.toUpperCase();
     }
 
     private static ArrayList<String> wordsMock = new ArrayList<String>(Arrays.asList(
