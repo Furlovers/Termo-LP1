@@ -74,6 +74,17 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
+
+        /*
+         * Método para reagir ao evento de digitação de uma tecla
+         * pelo usuário. Verifica qual a rodada corrente da partida
+         * para determinar à partir de qual quadrado deverá ser iniciada
+         * a impressão de novos caracteres na tela. Verifica se o usuário
+         * pode escrever (ou seja, se naquela rodada digitou menos que 5 letras)
+         * e restringe os caracteres possíveis de serem digitados para apenas letras
+         * maiúsculas ou minúsculas.
+         */
+        
         char typedChar = e.getKeyChar();
         String typedCharString = String.valueOf(typedChar).toUpperCase();
         typedChar = typedCharString.charAt(0);
@@ -259,6 +270,19 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
     }
 
     public void drawLettters(Graphics g) {
+
+        /*
+         * Imprime uma letra em um quadrado do 
+         * tabuleiro do jogo a partir do atributo 'letter'
+         * do objeto "Letter". É aplicada uma formatação 
+         * condicional para a cor do quadrado do tabuleiro
+         * em função do atributo 'state' do objeto "Letter".
+         * 
+         * Ademais, posiciona-se adequadamente cada letra 
+         * nos quadrados do tabuleiro a partir da linha e coluna
+         * de cada letra, definidos através de seu índice.
+         */
+
         super.paintComponent(g);
         int startX = 40;
         int startY = 60;

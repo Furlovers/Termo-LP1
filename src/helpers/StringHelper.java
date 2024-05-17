@@ -10,6 +10,13 @@ public class StringHelper {
 
     public static List<Letter> setStringToLetter(String word) {
 
+        /* Recebe uma palavra como string, tranforma todas
+         * as sua letras em maiúsculas então cria-se um objeto
+         * 'Letter' para cada uma delas. Cada objeto 'Letter'
+         * é armazenado em um ArrayList que é retornado, a fim 
+         * viabilizar a aplicação dos métodos desenvolvidos.
+         */
+
         char[] array = word.toCharArray();
         List<Letter> letterList = new ArrayList<Letter>();
 
@@ -22,6 +29,16 @@ public class StringHelper {
     }
 
     public static boolean isInAnswer(Letter letter, String answer, int letterIndex) {
+
+        /*
+         * Verifica o estado de uma letra da palavra informada pelo usuário
+         * em relação à palavra gabarito. Recebe um objeto letra, a palavra 
+         * gabarito e o índice da letra no tabuleiro. Desenvolvida para ser
+         * chamada iterativamente para cada "Letter" na ArrayList que contém
+         * a palavra informada pelo usuário após a aplicação do método
+         * setStringToLetter.
+         * 
+         */
 
         char[] separated_answer = new char[answer.length()];
 
