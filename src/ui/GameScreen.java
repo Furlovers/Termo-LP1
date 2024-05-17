@@ -48,7 +48,6 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
             new Letter('W'), new Letter('X'), new Letter('Y'), new Letter('Z'));
 
     public GameScreen() {
-        System.out.println(word);
         setLayout(null);
         drawButton();
         setFocusable(true);
@@ -84,7 +83,7 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
          * e restringe os caracteres possíveis de serem digitados para apenas letras
          * maiúsculas ou minúsculas.
          */
-        
+
         char typedChar = e.getKeyChar();
         String typedCharString = String.valueOf(typedChar).toUpperCase();
         typedChar = typedCharString.charAt(0);
@@ -220,7 +219,6 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
                 win = true;
                 List<Letter> currentWord = words.get(wordIndex - 1);
                 for (int i = 0; i < currentWord.size(); i++) {
-                    System.out.println(word);
                     boolean right = StringHelper.isInAnswer(currentWord.get(i), word, i);
                     Letter currentLetter = currentWord.get(i);
                     for (Letter letter : letters) {
@@ -272,13 +270,13 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
     public void drawLettters(Graphics g) {
 
         /*
-         * Imprime uma letra em um quadrado do 
+         * Imprime uma letra em um quadrado do
          * tabuleiro do jogo a partir do atributo 'letter'
-         * do objeto "Letter". É aplicada uma formatação 
+         * do objeto "Letter". É aplicada uma formatação
          * condicional para a cor do quadrado do tabuleiro
          * em função do atributo 'state' do objeto "Letter".
          * 
-         * Ademais, posiciona-se adequadamente cada letra 
+         * Ademais, posiciona-se adequadamente cada letra
          * nos quadrados do tabuleiro a partir da linha e coluna
          * de cada letra, definidos através de seu índice.
          */
