@@ -25,6 +25,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GameScreen extends JPanel implements KeyListener, ActionListener {
+
+    /*
+     * Classe de criação da interface gráfica para o jogo. Implementa os métodos de 
+     * exibição, reconhecimento de entradas e formatação para o tabuleiro.
+     */
+    
     private String word = WordsMock.getRandomWord();
     private int cellSize = 64;
     private int squareIndex = 0;
@@ -55,6 +61,11 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
     }
 
     public void paintComponent(Graphics g) {
+      
+        /*
+         * Utiliza os métodos drawetter e drawSquare para exibir ao
+         * usuário o resultado da rodada atual do jogo.
+         */
         super.paintComponent(g);
         if (squareIndex == 0) {
             squares = getSquares();
@@ -149,6 +160,15 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
     }
 
     public ArrayList<Square> getSquares() {
+
+        /*
+         * Prepara um ArrayList de objetos "Square", definindo o componente
+         * sobre o qual serão "desenhados" de fato os quadrados do tabuleiro.
+         * Utiliza-se os métodos getWidth() e getHeight() para determinar as 
+         * dimensões da tela de exibição e então, a partir do número de linhas
+         * e colunas e do espaçamento entre os quadrados, demarca-se o tabuleiro.
+         */
+
         ArrayList<Square> squares = new ArrayList<Square>();
 
         int panelWidth = getWidth();
@@ -176,6 +196,13 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
     }
 
     public void drawSquare(Graphics g, Square square, Letter letter) {
+
+        /*
+         * Desenha um quadrado na tela a partir dos atributos de um objeto
+         * "Square". Aplica uma formatação condicional com base no estado da
+         * objeto "Letter" represntado naquele quadrado.
+         */
+
         int arcWidth = 16;
         int arcHeight = 16;
 
@@ -209,6 +236,16 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        /*
+         * Método para tratar eventos gerados pelo botão de submissão
+         * de palavras. Confirma o envio da palavra informada pelo usuário
+         * e aplica sobre ela a lógica de validação, verificando o estado 
+         * de cada letra. Caso todas as letras estejam corretas, o jogador
+         * venceu naquela rodada.
+         */
+
+
         if (e.getSource() == submitButton) {
             canWrite = true;
             submitButton.setFocusable(false);
@@ -248,6 +285,13 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
     }
 
     public void drawButton() {
+
+        /*
+         * Implementa um botão "Enter", a fim de confirmar a palavra
+         * digitada pelo usuário e então aplicar a lógica de verificação
+         * para aquela rodada.
+         */
+
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int screenWidth = (int) screenSize.getWidth();
         int screenHeight = (int) screenSize.getHeight();
