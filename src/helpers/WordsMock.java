@@ -7,6 +7,7 @@ public class WordsMock {
 
     public static String getRandomWord() {
         String word = wordsMock.get((int) (Math.random() * wordsMock.size()));
+        System.out.println("Random word: " + word);
         return word.toUpperCase();
     }
 
