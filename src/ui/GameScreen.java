@@ -1,5 +1,7 @@
 package ui;
 
+import javax.swing.JOptionPane;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -113,11 +115,13 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
                             return;
                         }
                         break;
+
                     case 6:
-                        if (squareIndex == 30) {
+                        if (squareIndex == 25) {
                             return;
                         }
                         break;
+
                 }
                 if (squareIndex % 5 == 0) {
                     canWrite = true;
@@ -218,30 +222,61 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
             if (squareIndex == targetSquareIndex && !win) {
                 win = true;
                 List<Letter> currentWord = words.get(wordIndex - 1);
+
                 for (int i = 0; i < currentWord.size(); i++) {
-                    boolean right = StringHelper.isInAnswer(currentWord.get(i), word, i);
-                    Letter currentLetter = currentWord.get(i);
-                    for (Letter letter : letters) {
-                        if (letter.getLetter() == currentLetter.getLetter()) {
-                            if (letter.getStatesEnum() == stateEnum.DISCOVERED_AND_RIGHT) {
-                                continue;
-                            } else if (letter.getStatesEnum() == stateEnum.DISCOVERED_AND_WRONG) {
-                                if (currentLetter.getStatesEnum() == stateEnum.DISCOVERED_AND_RIGHT) {
-                                    letter.setState(stateEnum.DISCOVERED_AND_RIGHT);
-                                } else {
-                                    continue;
-                                }
-                            } else {
-                                letter.setState(currentLetter.getStatesEnum());
-                            }
-                        }
-                    }
-                    if (!right) {
+                    char guessedChar = currentWord.get(i).getLetter();
+                    char actualChar = word.charAt(i);
+
+                    if (guessedChar == actualChar) {
+                        currentWord.get(i).setState(stateEnum.DISCOVERED_AND_RIGHT);
+                    } else {
                         win = false;
                     }
                 }
-                wordIndex++;
 
+                for (int i = 0; i < currentWord.size(); i++) {
+                    Letter currentLetter = currentWord.get(i);
+                    if (currentLetter.getStatesEnum() != stateEnum.DISCOVERED_AND_RIGHT) {
+                        char guessedChar = currentLetter.getLetter();
+                        if (word.contains(String.valueOf(guessedChar))) {
+                            long greenCountInWord = currentWord.stream()
+                                    .filter(letter -> letter.getLetter() == guessedChar
+                                            && letter.getStatesEnum() == stateEnum.DISCOVERED_AND_RIGHT)
+                                    .count();
+                            long totalCountInAnswer = word.chars().filter(ch -> ch == guessedChar).count();
+                            if (totalCountInAnswer > greenCountInWord) {
+                                currentLetter.setState(stateEnum.DISCOVERED_AND_WRONG);
+                            } else {
+                                currentLetter.setState(stateEnum.WRONG);
+                            }
+                        } else {
+                            currentLetter.setState(stateEnum.WRONG);
+                        }
+                    }
+                }
+
+                for (Letter letter : currentWord) {
+                    for (Letter keyboardLetter : letters) {
+                        if (keyboardLetter.getLetter() == letter.getLetter()) {
+                            if (letter.getStatesEnum() == stateEnum.DISCOVERED_AND_RIGHT) {
+                                keyboardLetter.setState(stateEnum.DISCOVERED_AND_RIGHT);
+                            } else if (letter.getStatesEnum() == stateEnum.DISCOVERED_AND_WRONG
+                                    && keyboardLetter.getStatesEnum() != stateEnum.DISCOVERED_AND_RIGHT) {
+                                keyboardLetter.setState(stateEnum.DISCOVERED_AND_WRONG);
+                            } else if (keyboardLetter.getStatesEnum() == stateEnum.UNDISCOVERED) {
+                                keyboardLetter.setState(stateEnum.WRONG);
+                            }
+                        }
+                    }
+                }
+
+                if (win) {
+                    JOptionPane.showMessageDialog(this, "Parabéns, você acertou!");
+                } else if (wordIndex == 6) {
+                    JOptionPane.showMessageDialog(this, "Que pena, você não acertou! A palavra era: " + word);
+                }
+
+                wordIndex++;
                 repaint();
             }
         }
