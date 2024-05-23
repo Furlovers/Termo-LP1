@@ -4,11 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entities.Letter;
+import entities.stateEnum;
 
 public class StringHelper {
-    
-    
+
     public static List<Letter> setStringToLetter(String word) {
+
+        /*
+         * Recebe uma palavra como string, tranforma todas
+         * as sua letras em maiúsculas então cria-se um objeto
+         * 'Letter' para cada uma delas. Cada objeto 'Letter'
+         * é armazenado em um ArrayList que é retornado, a fim
+         * viabilizar a aplicação dos métodos desenvolvidos.
+         */
 
         char[] array = word.toCharArray();
         List<Letter> letterList = new ArrayList<Letter>();
@@ -21,53 +29,40 @@ public class StringHelper {
         return letterList;
     }
 
-    public static void isInAnswer(Letter letter, String answer){ // chamar iterativamente para cada letra em letterList -> isInAnswer(letterList[i], gabarito)
-        
-        char[] separated_answer = new char[answer.length];
+    public static boolean isCorrect(Letter letter, String answer, int letterIndex) {
 
-        for (int i = 0; i<answer.length; i++){
-            separated_answer[i] = answer.charAt(i);
-        }
-
-        for(int i = 0; i<answer.length; i++){
-            if (letter.getLetter() == separated_answer[i]){
-                letter.setState(DISCOVERED_AND_WRONG);
-            }
-        }
-
-    }
-
-    public static void isInRightPos(Letter letter, String answer){ // chamar iterativamente para cada letra em letterList -> isInAnswer(letterList[i], gabarito)
-        
-        char[] separated_answer = new char[answer.length];
-
-        for (int i = 0; i<answer.length; i++){
-            separated_answer[i] = answer.charAt(i);
-        }
-
-        for(int i = 0; i<answer.length; i++){
-            if (letter.getLetter() == separated_answer[i]){
-                letter.setState(DISCOVERED_AND_WRONG);
-            }
-        }
-
-    }
-
-    public static boolean win(List<Letter> letterList){
-
-        /*Se o estado de qualquer letra no array de letras letterList
-         * for diferente de DISCOVERED_AND_RIGHT (letra na posição certa),
-         * nao ganhou naquela rodada. Chamar sempre no final de cada rodada
-         * para ver se o usuário ganhou.
+        /*
+         * Verifica o estado de uma letra da palavra informada pelo usuário
+         * em relação à palavra gabarito. Recebe um objeto letra, a palavra
+         * gabarito e o índice da letra no tabuleiro. Desenvolvida para ser
+         * chamada iterativamente para cada "Letter" na ArrayList que contém
+         * a palavra informada pelo usuário após a aplicação do método
+         * setStringToLetter.
+         * 
          */
-        for(int i = 0; i < letterList.length; i++){
 
-            if(letterList[i].getStatesEnum() != DISCOVERED_AND_RIGHT){
-                return false;
+        char[] separated_answer = new char[answer.length()];
+
+        for (int i = 0; i < answer.length(); i++) {
+            separated_answer[i] = answer.charAt(i);
+        }
+
+        boolean isWrong = true;
+        for (int i = 0; i < answer.length(); i++) {
+            if (letter.getLetter() == separated_answer[i]) {
+                isWrong = false;
+                letter.setState(stateEnum.DISCOVERED_AND_WRONG);
+                if (i == letterIndex) {
+                    letter.setState(stateEnum.DISCOVERED_AND_RIGHT);
+                    return true;
+                }
             }
         }
 
-        return true;
-    }
+        if (isWrong) {
+            letter.setState(stateEnum.WRONG);
+        }
+        return false;
 
+    }
 }

@@ -1,6 +1,15 @@
 package entities;
 
 public class Square {
+
+    /*
+     * Definição da classe "Square", com os atributos
+     * 'xPos' e 'yPos', correspondentes às coordenadas
+     * do quadrado na tela e 'letter', correspondente
+     * à letra a ser exibida um em determinado quadrado 
+     * do tabuleiro do jogo.
+     */
+    
     private int xPos;
     private int yPos;
     private char letter;
