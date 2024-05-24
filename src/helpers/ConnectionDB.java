@@ -102,22 +102,4 @@ public class ConnectionDB {
 
     }
 
-    // public void insert(Connection conn){
-
-    // String table_name = "dicionario";
-
-    // String insertQuery = "INSERT INTO "+table_name+"(id, palavra) VALUES (?, ?)";
-
-    // try(PreparedStatement stmt = conn.prepareStatement(insertQuery);){
-    // stmt.set
-
-    // }
-    // catch{
-
-    // }
-    // finally{
-    // disconect(conn);
-    // }
-
-    // }
 }
