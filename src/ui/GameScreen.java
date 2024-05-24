@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 import entities.Letter;
 import entities.Square;
 import entities.stateEnum;
-import helpers.StringHelper;
+//import helpers.StringHelper;
 import helpers.WordsMock;
 
 import java.awt.Color;

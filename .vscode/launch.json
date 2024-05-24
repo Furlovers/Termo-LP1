@@ -6,7 +6,7 @@
         "name": "Launch Main",
         "request": "launch",
         "mainClass": "Main",
-        "vmArgs": "-classpath lib/mysql-connector-java-x.x.xx.jar:bin"
+        "vmArgs": "-classpath lib/mysql-connector-java-8.4.0.jar:bin"
       }
     ]
   }
