@@ -1,5 +1,7 @@
 package ui;
 
+import javax.swing.JOptionPane;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -25,6 +27,13 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GameScreen extends JPanel implements KeyListener, ActionListener {
+
+    /*
+     * Classe de criação da interface gráfica para o jogo. Implementa os métodos de 
+     * exibição, reconhecimento de entradas e formatação para o tabuleiro.
+     */
+    
+    private String word = WordsMock.getRandomWord();
     private int cellSize = 64;
     private int squareIndex = 0;
     private int wordIndex = 1;
@@ -40,7 +49,6 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
             Arrays.asList(new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' ')),
             Arrays.asList(new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' ')));
 
-    private String word = "TESTE";
     private List<Letter> letters = Arrays.asList(new Letter('A'), new Letter('B'), new Letter('C'), new Letter('D'),
             new Letter('E'), new Letter('F'), new Letter('G'), new Letter('H'), new Letter('I'), new Letter('J'),
             new Letter('K'), new Letter('L'), new Letter('M'), new Letter('N'), new Letter('O'), new Letter('P'),
@@ -48,7 +56,6 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
             new Letter('W'), new Letter('X'), new Letter('Y'), new Letter('Z'));
 
     public GameScreen() {
-        // word = WordsMock.getRandomWord();
         setLayout(null);
         drawButton();
         setFocusable(true);
@@ -56,6 +63,11 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
     }
 
     public void paintComponent(Graphics g) {
+      
+        /*
+         * Utiliza os métodos drawetter e drawSquare para exibir ao
+         * usuário o resultado da rodada atual do jogo.
+         */
         super.paintComponent(g);
         if (squareIndex == 0) {
             squares = getSquares();
@@ -74,6 +86,17 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
+
+        /*
+         * Método para reagir ao evento de digitação de uma tecla
+         * pelo usuário. Verifica qual a rodada corrente da partida
+         * para determinar à partir de qual quadrado deverá ser iniciada
+         * a impressão de novos caracteres na tela. Verifica se o usuário
+         * pode escrever (ou seja, se naquela rodada digitou menos que 5 letras)
+         * e restringe os caracteres possíveis de serem digitados para apenas letras
+         * maiúsculas ou minúsculas.
+         */
+
         char typedChar = e.getKeyChar();
         String typedCharString = String.valueOf(typedChar).toUpperCase();
         typedChar = typedCharString.charAt(0);
@@ -103,11 +126,13 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
                             return;
                         }
                         break;
+
                     case 6:
-                        if (squareIndex == 30) {
+                        if (squareIndex == 25) {
                             return;
                         }
                         break;
+
                 }
                 if (squareIndex % 5 == 0) {
                     canWrite = true;
@@ -139,6 +164,15 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
     }
 
     public ArrayList<Square> getSquares() {
+
+        /*
+         * Prepara um ArrayList de objetos "Square", definindo o componente
+         * sobre o qual serão "desenhados" de fato os quadrados do tabuleiro.
+         * Utiliza-se os métodos getWidth() e getHeight() para determinar as 
+         * dimensões da tela de exibição e então, a partir do número de linhas
+         * e colunas e do espaçamento entre os quadrados, demarca-se o tabuleiro.
+         */
+
         ArrayList<Square> squares = new ArrayList<Square>();
 
         int panelWidth = getWidth();
@@ -166,6 +200,13 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
     }
 
     public void drawSquare(Graphics g, Square square, Letter letter) {
+
+        /*
+         * Desenha um quadrado na tela a partir dos atributos de um objeto
+         * "Square". Aplica uma formatação condicional com base no estado da
+         * objeto "Letter" represntado naquele quadrado.
+         */
+
         int arcWidth = 16;
         int arcHeight = 16;
 
@@ -199,6 +240,16 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        /*
+         * Método para tratar eventos gerados pelo botão de submissão
+         * de palavras. Confirma o envio da palavra informada pelo usuário
+         * e aplica sobre ela a lógica de validação, verificando o estado 
+         * de cada letra. Caso todas as letras estejam corretas, o jogador
+         * venceu naquela rodada.
+         */
+
+
         if (e.getSource() == submitButton) {
             canWrite = true;
             submitButton.setFocusable(false);
@@ -208,36 +259,74 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
             if (squareIndex == targetSquareIndex && !win) {
                 win = true;
                 List<Letter> currentWord = words.get(wordIndex - 1);
+
                 for (int i = 0; i < currentWord.size(); i++) {
-                    boolean right = StringHelper.isInAnswer(currentWord.get(i), word, i);
-                    Letter currentLetter = currentWord.get(i);
-                    for (Letter letter : letters) {
-                        if (letter.getLetter() == currentLetter.getLetter()) {
-                            if (letter.getStatesEnum() == stateEnum.DISCOVERED_AND_RIGHT) {
-                                continue;
-                            } else if (letter.getStatesEnum() == stateEnum.DISCOVERED_AND_WRONG) {
-                                if (currentLetter.getStatesEnum() == stateEnum.DISCOVERED_AND_RIGHT) {
-                                    letter.setState(stateEnum.DISCOVERED_AND_RIGHT);
-                                } else {
-                                    continue;
-                                }
-                            } else {
-                                letter.setState(currentLetter.getStatesEnum());
-                            }
-                        }
-                    }
-                    if (!right) {
+                    char guessedChar = currentWord.get(i).getLetter();
+                    char actualChar = word.charAt(i);
+
+                    if (guessedChar == actualChar) {
+                        currentWord.get(i).setState(stateEnum.DISCOVERED_AND_RIGHT);
+                    } else {
                         win = false;
                     }
                 }
-                wordIndex++;
 
+                for (int i = 0; i < currentWord.size(); i++) {
+                    Letter currentLetter = currentWord.get(i);
+                    if (currentLetter.getStatesEnum() != stateEnum.DISCOVERED_AND_RIGHT) {
+                        char guessedChar = currentLetter.getLetter();
+                        if (word.contains(String.valueOf(guessedChar))) {
+                            long greenCountInWord = currentWord.stream()
+                                    .filter(letter -> letter.getLetter() == guessedChar
+                                            && letter.getStatesEnum() == stateEnum.DISCOVERED_AND_RIGHT)
+                                    .count();
+                            long totalCountInAnswer = word.chars().filter(ch -> ch == guessedChar).count();
+                            if (totalCountInAnswer > greenCountInWord) {
+                                currentLetter.setState(stateEnum.DISCOVERED_AND_WRONG);
+                            } else {
+                                currentLetter.setState(stateEnum.WRONG);
+                            }
+                        } else {
+                            currentLetter.setState(stateEnum.WRONG);
+                        }
+                    }
+                }
+
+                for (Letter letter : currentWord) {
+                    for (Letter keyboardLetter : letters) {
+                        if (keyboardLetter.getLetter() == letter.getLetter()) {
+                            if (letter.getStatesEnum() == stateEnum.DISCOVERED_AND_RIGHT) {
+                                keyboardLetter.setState(stateEnum.DISCOVERED_AND_RIGHT);
+                            } else if (letter.getStatesEnum() == stateEnum.DISCOVERED_AND_WRONG
+                                    && keyboardLetter.getStatesEnum() != stateEnum.DISCOVERED_AND_RIGHT) {
+                                keyboardLetter.setState(stateEnum.DISCOVERED_AND_WRONG);
+                            } else if (keyboardLetter.getStatesEnum() == stateEnum.UNDISCOVERED) {
+                                keyboardLetter.setState(stateEnum.WRONG);
+                            }
+                        }
+                    }
+                }
+
+                if (win) {
+                    JOptionPane.showMessageDialog(this, "Parabéns, você acertou!");
+                } else if (wordIndex == 6) {
+                    JOptionPane.showMessageDialog(this, "Que pena, você não acertou! A palavra era: " + word);
+                }
+
+                wordIndex++;
                 repaint();
             }
         }
     }
 
     public void drawButton() {
+
+        /*
+         * Implementa um botão "Enter", a fim de confirmar a palavra
+         * digitada pelo usuário e então aplicar a lógica de verificação
+         * para aquela rodada.
+         */
+
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int screenWidth = (int) screenSize.getWidth();
         int screenHeight = (int) screenSize.getHeight();
@@ -258,6 +347,19 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
     }
 
     public void drawLettters(Graphics g) {
+
+        /*
+         * Imprime uma letra em um quadrado do
+         * tabuleiro do jogo a partir do atributo 'letter'
+         * do objeto "Letter". É aplicada uma formatação
+         * condicional para a cor do quadrado do tabuleiro
+         * em função do atributo 'state' do objeto "Letter".
+         * 
+         * Ademais, posiciona-se adequadamente cada letra
+         * nos quadrados do tabuleiro a partir da linha e coluna
+         * de cada letra, definidos através de seu índice.
+         */
+
         super.paintComponent(g);
         int startX = 40;
         int startY = 60;
