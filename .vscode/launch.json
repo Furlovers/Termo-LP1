@@ -6,6 +6,20 @@
         "name": "DBManagement",
         "request": "launch",
         "mainClass": "helpers.DBManagement",
+        "projectName": "Termo-LP1_964897ee"
+      },
+      {
+        "type": "java",
+        "name": "App",
+        "request": "launch",
+        "mainClass": "App",
+        "projectName": "Termo-LP1_964897ee"
+      },
+      {
+        "type": "java",
+        "name": "DBManagement",
+        "request": "launch",
+        "mainClass": "helpers.DBManagement",
         "projectName": "Termo-LP1_5c28c702"
       },
       {

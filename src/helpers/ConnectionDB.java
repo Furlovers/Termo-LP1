@@ -3,8 +3,7 @@ package helpers;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-//import  java.sql.ResultSet;
-
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -43,6 +42,32 @@ public class ConnectionDB {
 
         System.out.println("Fechando a conexão");
         conn.close();
+    }
+
+    public static String getWord(Connection conn) throws SQLException{
+
+        String getWordQuery = "SELECT palavra FROM dicionario ORDER BY RAND() LIMIT 1;";
+
+        PreparedStatement stmt = null;
+        try  {
+           
+            stmt = conn.prepareStatement(getWordQuery);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString(1);
+                }
+                
+            } catch (Exception e) {
+            }
+            conn.close();
+
+        } catch (SQLException sqle) {
+            System.out.println(sqle.getStackTrace());
+        }
+
+        System.err.println(stmt.executeQuery().getString("palavra"));
+
+        return stmt.executeQuery().getString("palavra");
     }
 
     public void populate_db(Connection conn, ArrayList<String> words) {

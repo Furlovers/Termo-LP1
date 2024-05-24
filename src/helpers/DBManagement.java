@@ -8,7 +8,8 @@ import java.util.Arrays;
 import helpers.ConnectionDB;
 
 public class DBManagement {
-    public static void main(String[] args) {
+    
+    public static void main() {
 
         Connection conn = null;
 
@@ -5520,5 +5521,7 @@ public class DBManagement {
 
         }
     }
+
+
 
 }
