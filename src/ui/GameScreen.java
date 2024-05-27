@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 import entities.Letter;
 import entities.Square;
 import entities.stateEnum;
-import helpers.StringHelper;
+//import helpers.StringHelper;
 import helpers.WordsMock;
 
 import java.awt.Color;
@@ -22,6 +22,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +33,7 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
      * Classe de criação da interface gráfica para o jogo. Implementa os métodos de
      * exibição, reconhecimento de entradas e formatação para o tabuleiro.
      */
-
+    
     private String word = WordsMock.getRandomWord();
     private int cellSize = 64;
     private int squareIndex = 0;
@@ -60,6 +61,13 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
         drawButton();
         setFocusable(true);
         addKeyListener(this);
+        try {
+            Connection con =new ConnectionDB().connect();
+            word = ConnectionDB.getWord(con).toUpperCase();
+            System.err.println("Palavra: " + word);
+        } catch (Exception e) {
+            System.err.println("N'ao foi possivel conectar ao banco de dados");
+        } 
     }
 
     public void paintComponent(Graphics g) {
