@@ -3,11 +3,10 @@ package ui.Menu;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-public class MenuScreen extends JPanel  {
+public class MenuScreen extends JPanel {
     public MenuScreen() {
         this.setLayout(null);
         this.setSize(1280, 720);
@@ -15,7 +14,7 @@ public class MenuScreen extends JPanel  {
     }
 
     // ImageIcon icon = new ImageIcon("resources/play_defalut_button.png");
-    JButton button = new JButton(); 
+    JButton button = new JButton();
 
     @Override
     protected void paintComponent(Graphics arg0) {

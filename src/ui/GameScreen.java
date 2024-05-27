@@ -8,7 +8,8 @@ import javax.swing.JPanel;
 
 import entities.Letter;
 import entities.Square;
-import entities.stateEnum;
+import helpers.ConnectionDB;
+import helpers.StateEnum;
 //import helpers.StringHelper;
 import helpers.WordsMock;
 
@@ -66,7 +67,7 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
             word = ConnectionDB.getWord(con).toUpperCase();
             System.err.println("Palavra: " + word);
         } catch (Exception e) {
-            System.err.println("N'ao foi possivel conectar ao banco de dados");
+            System.err.println("Palavra não encontrada");
         }
     }
 
@@ -272,7 +273,7 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
                     char actualChar = word.charAt(i);
 
                     if (guessedChar == actualChar) {
-                        currentWord.get(i).setState(stateEnum.DISCOVERED_AND_RIGHT);
+                        currentWord.get(i).setState(StateEnum.DISCOVERED_AND_RIGHT);
                     } else {
                         win = false;
                     }
@@ -280,21 +281,21 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
 
                 for (int i = 0; i < currentWord.size(); i++) {
                     Letter currentLetter = currentWord.get(i);
-                    if (currentLetter.getStatesEnum() != stateEnum.DISCOVERED_AND_RIGHT) {
+                    if (currentLetter.getStatesEnum() != StateEnum.DISCOVERED_AND_RIGHT) {
                         char guessedChar = currentLetter.getLetter();
                         if (word.contains(String.valueOf(guessedChar))) {
                             long greenCountInWord = currentWord.stream()
                                     .filter(letter -> letter.getLetter() == guessedChar
-                                            && letter.getStatesEnum() == stateEnum.DISCOVERED_AND_RIGHT)
+                                            && letter.getStatesEnum() == StateEnum.DISCOVERED_AND_RIGHT)
                                     .count();
                             long totalCountInAnswer = word.chars().filter(ch -> ch == guessedChar).count();
                             if (totalCountInAnswer > greenCountInWord) {
-                                currentLetter.setState(stateEnum.DISCOVERED_AND_WRONG);
+                                currentLetter.setState(StateEnum.DISCOVERED_AND_WRONG);
                             } else {
-                                currentLetter.setState(stateEnum.WRONG);
+                                currentLetter.setState(StateEnum.WRONG);
                             }
                         } else {
-                            currentLetter.setState(stateEnum.WRONG);
+                            currentLetter.setState(StateEnum.WRONG);
                         }
                     }
                 }
@@ -302,13 +303,13 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
                 for (Letter letter : currentWord) {
                     for (Letter keyboardLetter : letters) {
                         if (keyboardLetter.getLetter() == letter.getLetter()) {
-                            if (letter.getStatesEnum() == stateEnum.DISCOVERED_AND_RIGHT) {
-                                keyboardLetter.setState(stateEnum.DISCOVERED_AND_RIGHT);
-                            } else if (letter.getStatesEnum() == stateEnum.DISCOVERED_AND_WRONG
-                                    && keyboardLetter.getStatesEnum() != stateEnum.DISCOVERED_AND_RIGHT) {
-                                keyboardLetter.setState(stateEnum.DISCOVERED_AND_WRONG);
-                            } else if (keyboardLetter.getStatesEnum() == stateEnum.UNDISCOVERED) {
-                                keyboardLetter.setState(stateEnum.WRONG);
+                            if (letter.getStatesEnum() == StateEnum.DISCOVERED_AND_RIGHT) {
+                                keyboardLetter.setState(StateEnum.DISCOVERED_AND_RIGHT);
+                            } else if (letter.getStatesEnum() == StateEnum.DISCOVERED_AND_WRONG
+                                    && keyboardLetter.getStatesEnum() != StateEnum.DISCOVERED_AND_RIGHT) {
+                                keyboardLetter.setState(StateEnum.DISCOVERED_AND_WRONG);
+                            } else if (keyboardLetter.getStatesEnum() == StateEnum.UNDISCOVERED) {
+                                keyboardLetter.setState(StateEnum.WRONG);
                             }
                         }
                     }
@@ -375,11 +376,11 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
         int columns = 13;
 
         letters.forEach(letter -> {
-            if (letter.getStatesEnum() == stateEnum.DISCOVERED_AND_RIGHT) {
+            if (letter.getStatesEnum() == StateEnum.DISCOVERED_AND_RIGHT) {
                 g.setColor(Color.GREEN);
-            } else if (letter.getStatesEnum() == stateEnum.DISCOVERED_AND_WRONG) {
+            } else if (letter.getStatesEnum() == StateEnum.DISCOVERED_AND_WRONG) {
                 g.setColor(Color.YELLOW);
-            } else if (letter.getStatesEnum() == stateEnum.WRONG) {
+            } else if (letter.getStatesEnum() == StateEnum.WRONG) {
                 g.setColor(Color.DARK_GRAY);
             } else {
                 g.setColor(Color.BLACK);

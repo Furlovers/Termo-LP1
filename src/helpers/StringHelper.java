@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entities.Letter;
-import entities.stateEnum;
 
 public class StringHelper {
 
@@ -51,16 +50,16 @@ public class StringHelper {
         for (int i = 0; i < answer.length(); i++) {
             if (letter.getLetter() == separated_answer[i]) {
                 isWrong = false;
-                letter.setState(stateEnum.DISCOVERED_AND_WRONG);
+                letter.setState(StateEnum.DISCOVERED_AND_WRONG);
                 if (i == letterIndex) {
-                    letter.setState(stateEnum.DISCOVERED_AND_RIGHT);
+                    letter.setState(StateEnum.DISCOVERED_AND_RIGHT);
                     return true;
                 }
             }
         }
 
         if (isWrong) {
-            letter.setState(stateEnum.WRONG);
+            letter.setState(StateEnum.WRONG);
         }
         return false;
 

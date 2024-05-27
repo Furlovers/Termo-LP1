@@ -1,6 +1,6 @@
-package entities;
+package helpers;
 
-public enum stateEnum {
+public enum StateEnum {
 
     /*
      * Enumeração dos estados possívis para uma letra

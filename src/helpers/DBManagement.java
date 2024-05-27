@@ -5,12 +5,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import helpers.ConnectionDB;
-
 public class DBManagement {
-    
-    public static void main() {
 
+    public static void main(String[] args) {
         Connection conn = null;
 
         ArrayList<String> words = new ArrayList<String>(Arrays.asList(
@@ -5521,7 +5518,5 @@ public class DBManagement {
 
         }
     }
-
-
 
 }

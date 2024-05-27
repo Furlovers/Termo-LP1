@@ -1,4 +1,3 @@
-import helpers.DBManagement;
 import ui.Main;
 
 public class App {

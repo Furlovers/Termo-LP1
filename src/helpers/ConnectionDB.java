@@ -44,19 +44,19 @@ public class ConnectionDB {
         conn.close();
     }
 
-    public static String getWord(Connection conn) throws SQLException{
+    public static String getWord(Connection conn) throws SQLException {
 
         String getWordQuery = "SELECT palavra FROM dicionario ORDER BY RAND() LIMIT 1;";
 
         PreparedStatement stmt = null;
-        try  {
-           
+        try {
+
             stmt = conn.prepareStatement(getWordQuery);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return rs.getString(1);
                 }
-                
+
             } catch (Exception e) {
             }
             conn.close();
@@ -77,8 +77,6 @@ public class ConnectionDB {
          * 
          * conn => Conexão para o Banco de Dados
          */
-
-        String table_name = "dicionario";
 
         /*
          * String populateQuery = "INSERT INTO " + table_name + " VALUES ('BRENO')";
