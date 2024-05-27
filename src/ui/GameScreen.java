@@ -3,7 +3,9 @@ package ui;
 import javax.swing.JOptionPane;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import entities.Letter;
@@ -14,6 +16,7 @@ import helpers.StateEnum;
 import helpers.WordsMock;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -153,6 +156,8 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
                 if (squareIndex == squares.size() || !String.valueOf(typedChar).matches("[a-zA-Z]") || !canWrite) {
                     return;
                 }
+                System.out.println(
+                        "Typed char: " + typedChar + " squareIndex: " + squareIndex + " wordIndex: " + wordIndex);
                 words.get(wordIndex - 1).get(squareIndex - (5 * (wordIndex - 1))).setLetter(typedChar);
                 squares.get(squareIndex).setLetter(typedChar);
                 squareIndex++;
@@ -316,9 +321,10 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
                 }
 
                 if (win) {
-                    JOptionPane.showMessageDialog(this, "Parabéns, você acertou!");
+                    showFinalDialog("Parabéns, você acertou!", "Vitória", JOptionPane.INFORMATION_MESSAGE);
                 } else if (wordIndex == 6) {
-                    JOptionPane.showMessageDialog(this, "Que pena, você não acertou! A palavra era: " + word);
+                    showFinalDialog("Que pena, você não acertou! A palavra era: " + word, "Derrota",
+                            JOptionPane.ERROR_MESSAGE);
                 }
 
                 wordIndex++;
@@ -394,5 +400,38 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
             g.drawString(letter.getLetter() + "", xPos, yPos);
         });
 
+    }
+
+    private void showFinalDialog(String message, String title, int messageType) {
+        JPanel panel = new JPanel();
+        panel.setBackground(Color.WHITE);
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+        JLabel label = new JLabel(message);
+        label.setFont(new Font("Arial", Font.BOLD, 18));
+        label.setForeground(Color.BLACK);
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(label);
+
+        word = WordsMock.getRandomWord();
+        squareIndex = 0;
+        wordIndex = 0;
+        canWrite = true;
+        win = false;
+        words = Arrays.asList(
+                Arrays.asList(new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' ')),
+                Arrays.asList(new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' ')),
+                Arrays.asList(new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' ')),
+                Arrays.asList(new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' ')),
+                Arrays.asList(new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' ')),
+                Arrays.asList(new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' '), new Letter(' ')));
+
+        letters = Arrays.asList(new Letter('A'), new Letter('B'), new Letter('C'), new Letter('D'),
+                new Letter('E'), new Letter('F'), new Letter('G'), new Letter('H'), new Letter('I'), new Letter('J'),
+                new Letter('K'), new Letter('L'), new Letter('M'), new Letter('N'), new Letter('O'), new Letter('P'),
+                new Letter('Q'), new Letter('R'), new Letter('S'), new Letter('T'), new Letter('U'), new Letter('V'),
+                new Letter('W'), new Letter('X'), new Letter('Y'), new Letter('Z'));
+
+        JOptionPane.showMessageDialog(this, panel, title, messageType);
     }
 }
