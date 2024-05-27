@@ -1,10 +1,10 @@
 package entities;
 
 public enum stateEnum {
-    
+
     /*
      * Enumeração dos estados possívis para uma letra
-     * em comparação com uma letra da palavra gabarito 
+     * em comparação com uma letra da palavra gabarito
      * na partida.
      * 
      * Descrição dos estados:
