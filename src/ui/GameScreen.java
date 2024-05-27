@@ -33,7 +33,7 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
      * Classe de criação da interface gráfica para o jogo. Implementa os métodos de
      * exibição, reconhecimento de entradas e formatação para o tabuleiro.
      */
-    
+
     private String word = WordsMock.getRandomWord();
     private int cellSize = 64;
     private int squareIndex = 0;
@@ -62,12 +62,12 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
         setFocusable(true);
         addKeyListener(this);
         try {
-            Connection con =new ConnectionDB().connect();
+            Connection con = new ConnectionDB().connect();
             word = ConnectionDB.getWord(con).toUpperCase();
             System.err.println("Palavra: " + word);
         } catch (Exception e) {
             System.err.println("N'ao foi possivel conectar ao banco de dados");
-        } 
+        }
     }
 
     public void paintComponent(Graphics g) {
