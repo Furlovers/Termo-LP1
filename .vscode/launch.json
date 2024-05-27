@@ -1,0 +1,41 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "java",
+        "name": "DBManagement",
+        "request": "launch",
+        "mainClass": "helpers.DBManagement",
+        "projectName": "Termo-LP1_964897ee"
+      },
+      {
+        "type": "java",
+        "name": "App",
+        "request": "launch",
+        "mainClass": "App",
+        "projectName": "Termo-LP1_964897ee"
+      },
+      {
+        "type": "java",
+        "name": "DBManagement",
+        "request": "launch",
+        "mainClass": "helpers.DBManagement",
+        "projectName": "Termo-LP1_5c28c702"
+      },
+      {
+        "type": "java",
+        "name": "App",
+        "request": "launch",
+        "mainClass": "App",
+        "projectName": "Termo-LP1_5c28c702"
+      },
+      {
+        "type": "java",
+        "name": "Launch Main",
+        "request": "launch",
+        "mainClass": "Main",
+        "vmArgs": "-classpath lib/mysql-connector-java-8.4.0.jar:bin"
+      }
+    ]
+  }
+  

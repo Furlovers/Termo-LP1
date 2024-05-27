@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 import entities.Letter;
 import entities.Square;
 import entities.stateEnum;
-import helpers.StringHelper;
+//import helpers.StringHelper;
 import helpers.WordsMock;
 
 import java.awt.Color;
@@ -22,6 +22,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,10 +30,10 @@ import java.util.List;
 public class GameScreen extends JPanel implements KeyListener, ActionListener {
 
     /*
-     * Classe de criação da interface gráfica para o jogo. Implementa os métodos de 
+     * Classe de criação da interface gráfica para o jogo. Implementa os métodos de
      * exibição, reconhecimento de entradas e formatação para o tabuleiro.
      */
-    
+
     private String word = WordsMock.getRandomWord();
     private int cellSize = 64;
     private int squareIndex = 0;
@@ -60,10 +61,17 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
         drawButton();
         setFocusable(true);
         addKeyListener(this);
+        try {
+            Connection con = new ConnectionDB().connect();
+            word = ConnectionDB.getWord(con).toUpperCase();
+            System.err.println("Palavra: " + word);
+        } catch (Exception e) {
+            System.err.println("N'ao foi possivel conectar ao banco de dados");
+        }
     }
 
     public void paintComponent(Graphics g) {
-      
+
         /*
          * Utiliza os métodos drawetter e drawSquare para exibir ao
          * usuário o resultado da rodada atual do jogo.
@@ -168,7 +176,7 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
         /*
          * Prepara um ArrayList de objetos "Square", definindo o componente
          * sobre o qual serão "desenhados" de fato os quadrados do tabuleiro.
-         * Utiliza-se os métodos getWidth() e getHeight() para determinar as 
+         * Utiliza-se os métodos getWidth() e getHeight() para determinar as
          * dimensões da tela de exibição e então, a partir do número de linhas
          * e colunas e do espaçamento entre os quadrados, demarca-se o tabuleiro.
          */
@@ -244,11 +252,10 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
         /*
          * Método para tratar eventos gerados pelo botão de submissão
          * de palavras. Confirma o envio da palavra informada pelo usuário
-         * e aplica sobre ela a lógica de validação, verificando o estado 
+         * e aplica sobre ela a lógica de validação, verificando o estado
          * de cada letra. Caso todas as letras estejam corretas, o jogador
          * venceu naquela rodada.
          */
-
 
         if (e.getSource() == submitButton) {
             canWrite = true;
