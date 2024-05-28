@@ -108,6 +108,9 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
          * e restringe os caracteres possíveis de serem digitados para apenas letras
          * maiúsculas ou minúsculas.
          */
+        if (e.getKeyChar() == KeyEvent.VK_ENTER) {
+            submitButton.doClick();
+        }
 
         char typedChar = e.getKeyChar();
         String typedCharString = String.valueOf(typedChar).toUpperCase();
@@ -148,6 +151,9 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
                 }
                 if (squareIndex % 5 == 0) {
                     canWrite = true;
+                }
+                if ((int) e.getKeyChar() == 10){
+
                 }
                 squareIndex--;
                 words.get(wordIndex - 1).get(squareIndex - (5 * (wordIndex - 1))).setLetter(' ');
