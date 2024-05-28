@@ -156,8 +156,6 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
                 if (squareIndex == squares.size() || !String.valueOf(typedChar).matches("[a-zA-Z]") || !canWrite) {
                     return;
                 }
-                System.out.println(
-                        "Typed char: " + typedChar + " squareIndex: " + squareIndex + " wordIndex: " + wordIndex);
                 words.get(wordIndex - 1).get(squareIndex - (5 * (wordIndex - 1))).setLetter(typedChar);
                 squares.get(squareIndex).setLetter(typedChar);
                 squareIndex++;
