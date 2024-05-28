@@ -37,24 +37,4 @@ public class Letter {
         this.state = state;
     }
 
-    public List<Letter> setStringToLetter(String word) {
-
-        /*
-         * Recebe uma palavra como string, tranforma todas
-         * as sua letras em maiúsculas então cria-se um objeto
-         * 'Letter' para cada uma delas. Cada objeto 'Letter'
-         * é armazenado em um ArrayList que é retornado, a fim
-         * viabilizar a aplicação dos métodos desenvolvidos.
-         */
-
-        char[] array = word.toCharArray();
-        List<Letter> letterList = new ArrayList<Letter>();
-
-        for (int i = 0; i < word.length(); i++) {
-            array[i] = Character.toUpperCase(array[i]);
-            Letter letter = new Letter(array[i]);
-            letterList.add(letter);
-        }
-        return letterList;
-    }
 }
