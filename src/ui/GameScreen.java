@@ -38,7 +38,7 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
      * exibição, reconhecimento de entradas e formatação para o tabuleiro.
      */
 
-    private String word = WordsMock.getRandomWord();
+    private String word;
     private int cellSize = 64;
     private int squareIndex = 0;
     private int wordIndex = 1;
@@ -153,7 +153,7 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
                 if (squareIndex % 5 == 0) {
                     canWrite = true;
                 }
-                if ((int) e.getKeyChar() == 10){
+                if ((int) e.getKeyChar() == 10) {
 
                 }
                 squareIndex--;

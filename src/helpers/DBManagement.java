@@ -7,6 +7,9 @@ import java.util.Arrays;
 
 public class DBManagement {
 
+    Connection conn = null;
+    // ConnectionDB setup = null;
+
     public static void main(String[] args) {
         Connection conn = null;
 
@@ -5442,56 +5445,27 @@ public class DBManagement {
                 "xisto",
                 "xucra",
                 "xucro",
-                "zagas",
-                "zanga",
-                "zango",
-                "zanza",
-                "zanze",
-                "zanzo",
-                "zarpa",
-                "zarpe",
                 "zarpo",
                 "zebra",
-                "zelai",
-                "zelam",
                 "zelar",
-                "zelas",
-                "zelei",
-                "zelem",
-                "zeles",
-                "zelou",
-                "zerai",
-                "zeram",
                 "zerar",
-                "zeras",
-                "zerei",
-                "zerem",
-                "zeres",
                 "zeros",
-                "zerou",
                 "zinco",
                 "ziper",
-                "zomba",
-                "zombe",
-                "zombo",
                 "zonas",
                 "zonza",
                 "zonzo",
-                "zumba",
-                "zumbe",
-                "zumbi",
-                "zumbo",
-                "zunam",
-                "zunas",
-                "zunem",
-                "zunes",
-                "zunia",
-                "zunir",
-                "zunis",
-                "zuniu",
-                "zurra",
-                "zurre",
-                "zurro"));
+                "zumba"));
+
+        try {
+
+            ConnectionDB setup = new ConnectionDB();
+            setup.setDatabase();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
 
         try {
             ConnectionDB db = new ConnectionDB();

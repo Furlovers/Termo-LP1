@@ -14,18 +14,18 @@ public class ConnectionDB {
      * os parâmetros especificados no método connect.
      */
 
+    public static final String driver = "com.mysql.cj.jdbc.Driver";
+    public static final String error_msg = "Erro na Conexão com o BD: ";
+
+    public static final String server = "localhost";
+    public static final String port = "3306";
+    public static final String database = "projetosemestral";
+    public static final String user = "user_termo";
+    public static final String password = "termooo";
+
     public Connection connect() throws SQLException {
 
-        System.out.println("Chamou a função");
-
-        String driver = "com.mysql.cj.jdbc.Driver";
-        String error_msg = "Erro na Conexão com o BD: ";
-
-        String server = "localhost";
-        String port = "3306";
-        String database = "projetosemestral";
-        String user = "user_termo";
-        String password = "termooo";
+        System.out.println("Chamou a função connect()");
 
         try {
             Class.forName(driver);
@@ -35,6 +35,52 @@ public class ConnectionDB {
         } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException(error_msg + e);
         }
+
+    }
+
+    public void setDatabase() throws SQLException {
+
+        System.out.println("Chamou a função setDatabase()");
+
+        java.sql.Connection setupConnection = null;
+
+        String driver_URL = "jdbc:mysql://" + server + ":" + port + "/";
+
+        String createDatabase = "CREATE DATABASE IF NOT EXISTS " + database;
+        String useDatabase = "USE " + database;
+        String createTable = "CREATE TABLE IF NOT EXISTS dicionario (palavra VARCHAR(6))";
+
+        PreparedStatement createDBStmt = null;
+
+        PreparedStatement useStmt = null;
+
+        PreparedStatement createTableStmt = null;
+
+        try {
+
+            Class.forName(driver);
+            System.out.println("Conseguiu conectar - Criação do database");
+
+            setupConnection = DriverManager.getConnection(driver_URL, user, password);
+
+            createDBStmt = setupConnection.prepareStatement(createDatabase);
+            useStmt = setupConnection.prepareStatement(useDatabase);
+            createTableStmt = setupConnection.prepareStatement(createTable);
+
+            createDBStmt.executeUpdate();
+            System.out.println("Executou a query de criação do db");
+
+            useStmt.executeUpdate();
+            System.out.println("Executou a query de uso do db");
+
+            createTableStmt.executeUpdate();
+            System.out.println("Executou a query de criação da tabela");
+
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(error_msg + e);
+        }
+
+        setupConnection.close();
 
     }
 
