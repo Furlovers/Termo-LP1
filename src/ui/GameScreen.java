@@ -110,6 +110,7 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
          */
         if (e.getKeyChar() == KeyEvent.VK_ENTER) {
             submitButton.doClick();
+            
         }
 
         char typedChar = e.getKeyChar();
@@ -227,6 +228,8 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
 
         int arcWidth = 16;
         int arcHeight = 16;
+        Color darkYellow = new Color(204, 204,2);
+        Color primaryGreen = new Color(0, 160, 0);
 
         switch (letter.getStatesEnum()) {
             case UNDISCOVERED:
@@ -236,10 +239,10 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
                 g.setColor(Color.black);
                 break;
             case DISCOVERED_AND_WRONG:
-                g.setColor(Color.yellow);
+                g.setColor(darkYellow);
                 break;
             case DISCOVERED_AND_RIGHT:
-                g.setColor(Color.green);
+                g.setColor(primaryGreen);
                 break;
         }
         g.fillRoundRect(square.getXPos(), square.getYPos(), cellSize, cellSize, arcWidth, arcHeight);
