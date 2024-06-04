@@ -110,7 +110,6 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
          */
         if (e.getKeyChar() == KeyEvent.VK_ENTER) {
             submitButton.doClick();
-            
         }
 
         char typedChar = e.getKeyChar();
@@ -228,8 +227,6 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
 
         int arcWidth = 16;
         int arcHeight = 16;
-        Color darkYellow = new Color(204, 204,2);
-        Color primaryGreen = new Color(0, 160, 0);
 
         switch (letter.getStatesEnum()) {
             case UNDISCOVERED:
@@ -239,10 +236,10 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
                 g.setColor(Color.black);
                 break;
             case DISCOVERED_AND_WRONG:
-                g.setColor(darkYellow);
+                g.setColor(Color.yellow);
                 break;
             case DISCOVERED_AND_RIGHT:
-                g.setColor(primaryGreen);
+                g.setColor(Color.green);
                 break;
         }
         g.fillRoundRect(square.getXPos(), square.getYPos(), cellSize, cellSize, arcWidth, arcHeight);
@@ -420,7 +417,13 @@ public class GameScreen extends JPanel implements KeyListener, ActionListener {
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(label);
 
-        word = WordsMock.getRandomWord();
+        try {
+            Connection con = new ConnectionDB().connect();
+            word = ConnectionDB.getWord(con).toUpperCase();
+            System.err.println("Palavra: " + word);
+        } catch (Exception e) {
+            System.err.println("Palavra não encontrada");
+        }
         squareIndex = 0;
         wordIndex = 0;
         canWrite = true;
